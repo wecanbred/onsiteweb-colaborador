@@ -43,7 +43,6 @@
             position: relative;
         }
 
-        /* O BONEQUINHO LILÁS */
         .mascot-container {
             font-size: 45px;
             background: var(--lilac);
@@ -94,10 +93,6 @@
         .container { display: flex; flex-direction: column; align-items: center; gap: 15px; padding: 20px; }
         .card { background: white; border-radius: 12px; width: 100%; max-width: 320px; padding: 25px; text-align: center; border-top: 5px solid var(--primary); box-sizing: border-box; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 
-        @media (min-width: 600px) {
-            .container { flex-direction: row; justify-content: center; }
-        }
-        
         footer { text-align: center; padding: 20px; background: #222; color: white; font-size: 0.8rem; }
     </style>
 </head>
@@ -114,7 +109,7 @@
             
             <button id="btnEntrar" onclick="verificarLogin()">Acessar Portal</button>
             
-            <div id="loadingMsg">Verificando dados, aguarde...</div>
+            <div id="loadingMsg">Verificando dados...</div>
             <p id="loginError">CPF ou Senha incorretos.</p>
         </div>
     </div>
@@ -122,29 +117,21 @@
     <div id="mainContent">
         <nav class="navbar">
             <div style="font-weight: bold; color: var(--primary);">WE CAN BR</div>
-            <a href="#" onclick="logout()" style="text-decoration:none; color:var(--danger); font-weight:bold; font-size: 0.8rem;">🚪 SAIR</a>
+            <a href="#" onclick="logout()" style="text-decoration:none; color:var(--danger); font-weight:bold;">🚪 SAIR</a>
         </nav>
         <header>
             <h1>BEM-VINDO AO ONSITE</h1>
             <p>Seus documentos de forma rápida e segura.</p>
         </header>
         <div class="container">
-            <div class="card">
-                <span style="font-size: 40px;">📂</span>
-                <h3>Documentos</h3>
-                <p>Acesse seus arquivos oficiais.</p>
-            </div>
-            <div class="card">
-                <span style="font-size: 40px;">📅</span>
-                <h3>Escalas</h3>
-                <p>Confira seu cronograma de trabalho.</p>
-            </div>
+            <div class="card"><h3>Documentos</h3><p>Acesse seus arquivos.</p></div>
+            <div class="card"><h3>Escalas</h3><p>Confira seu cronograma.</p></div>
         </div>
         <footer>© 2026 Apoio ao On-Site | WeCanBR</footer>
     </div>
 
     <script>
-        // LINK DA API FORNECIDO PELO USUÁRIO
+        // API CONFIGURADA
         const URL_API = "https://script.google.com/macros/s/AKfycbxkIdlDfuztedbbklTNIZPcpMxK23zViCAihPkFtsom18oLWEmdZmaW8DsvV-M0VxnBUA/exec";
 
         const mascot = document.getElementById('mascot');
@@ -153,22 +140,15 @@
         function esconder() { mascot.innerText = "🙈"; mascot.style.backgroundColor = "#8a73cf"; }
         function resetMascot() { mascot.innerText = "👀"; mascot.style.backgroundColor = "var(--lilac)"; }
 
-        window.onload = function() {
-            if(sessionStorage.getItem("acesso_liberado") === "true") {
-                document.body.classList.add("logged-in");
-            }
-        }
-
         async function verificarLogin() {
-            const cpfApenasNumeros = document.getElementById("cpfInput").value.replace(/\D/g, '');
+            const cpf = document.getElementById("cpfInput").value.replace(/\D/g, '');
             const senha = document.getElementById("passInput").value;
-            
             const btn = document.getElementById("btnEntrar");
             const erro = document.getElementById("loginError");
             const loading = document.getElementById("loadingMsg");
 
-            if(!cpfApenasNumeros || !senha) {
-                alert("Por favor, preencha todos os campos.");
+            if(!cpf || !senha) {
+                alert("Preencha todos os campos.");
                 return;
             }
 
@@ -178,11 +158,7 @@
             mascot.innerText = "⏳";
 
             try {
-                const urlFinal = `${URL_API}?action=login&cpf=${cpfApenasNumeros}&senha=${encodeURIComponent(senha)}`;
-                const response = await fetch(urlFinal);
-                
-                if (!response.ok) throw new Error();
-                
+                const response = await fetch(`${URL_API}?action=login&cpf=${cpf}&senha=${encodeURIComponent(senha)}`);
                 const data = await response.json();
 
                 if (data.status === "success") {
@@ -206,6 +182,12 @@
         function logout() {
             sessionStorage.clear();
             location.reload();
+        }
+
+        window.onload = function() {
+            if(sessionStorage.getItem("acesso_liberado") === "true") {
+                document.body.classList.add("logged-in");
+            }
         }
     </script>
 </body>
