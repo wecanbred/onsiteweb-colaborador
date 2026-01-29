@@ -78,19 +78,19 @@
             margin-top: 15px; transition: 0.3s;
         }
 
-        .login-box button:disabled { background: #ccc; }
+        .login-box button:active { transform: scale(0.98); }
+        .login-box button:disabled { background: #ccc; cursor: not-allowed; }
 
-        /* MENSAGENS */
         #loadingMsg { display: none; color: var(--primary); font-weight: bold; margin-top: 15px; }
         #loginError { display: none; color: var(--danger); font-weight: 500; font-size: 0.9rem; margin-top: 10px; }
 
-        /* CONTEÚDO PRINCIPAL */
         #mainContent { display: none; }
         body.logged-in #mainContent { display: block; }
         body.logged-in #loginOverlay { display: none; }
 
         .navbar { background: white; height: 60px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: fixed; top: 0; width: 100%; z-index: 1000; box-sizing: border-box; }
         header { background: linear-gradient(rgba(106, 17, 203, 0.8), rgba(37, 117, 252, 0.8)), url('https://wecanbr.com.br/wp-content/uploads/2021/08/bg-quem-somos.jpg'); background-size: cover; background-position: center; color: white; padding: 60px 20px; text-align: center; margin-top: 60px; }
+        
         .container { display: flex; flex-direction: column; align-items: center; gap: 15px; padding: 20px; }
         .card { background: white; border-radius: 12px; width: 100%; max-width: 320px; padding: 25px; text-align: center; border-top: 5px solid var(--primary); box-sizing: border-box; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 
@@ -112,17 +112,17 @@
             <input type="tel" id="cpfInput" placeholder="CPF (apenas números)" inputmode="numeric" onfocus="olhar()" onblur="resetMascot()">
             <input type="password" id="passInput" placeholder="Sua senha" onfocus="esconder()" onblur="resetMascot()">
             
-            <button id="btnEntrar" onclick="verificarLogin()">Entrar no Sistema</button>
+            <button id="btnEntrar" onclick="verificarLogin()">Acessar Portal</button>
             
-            <div id="loadingMsg">Verificando dados...</div>
-            <p id="loginError">CPF ou Senha incorretos. Tente novamente.</p>
+            <div id="loadingMsg">Verificando dados, aguarde...</div>
+            <p id="loginError">CPF ou Senha incorretos.</p>
         </div>
     </div>
 
     <div id="mainContent">
         <nav class="navbar">
             <div style="font-weight: bold; color: var(--primary);">WE CAN BR</div>
-            <a href="#" onclick="logout()" style="text-decoration:none; color:var(--danger); font-weight:bold;">🚪 SAIR</a>
+            <a href="#" onclick="logout()" style="text-decoration:none; color:var(--danger); font-weight:bold; font-size: 0.8rem;">🚪 SAIR</a>
         </nav>
         <header>
             <h1>BEM-VINDO AO ONSITE</h1>
@@ -132,19 +132,19 @@
             <div class="card">
                 <span style="font-size: 40px;">📂</span>
                 <h3>Documentos</h3>
-                <p>Acesse seus arquivos.</p>
+                <p>Acesse seus arquivos oficiais.</p>
             </div>
             <div class="card">
                 <span style="font-size: 40px;">📅</span>
                 <h3>Escalas</h3>
-                <p>Confira seu cronograma.</p>
+                <p>Confira seu cronograma de trabalho.</p>
             </div>
         </div>
         <footer>© 2026 Apoio ao On-Site | WeCanBR</footer>
     </div>
 
     <script>
-        // --- COLOQUE O SEU LINK DA IMPLANTAÇÃO AQUI ---
+        // LINK DA API FORNECIDO PELO USUÁRIO
         const URL_API = "https://script.google.com/macros/s/AKfycbxkIdlDfuztedbbklTNIZPcpMxK23zViCAihPkFtsom18oLWEmdZmaW8DsvV-M0VxnBUA/exec";
 
         const mascot = document.getElementById('mascot');
@@ -160,14 +160,15 @@
         }
 
         async function verificarLogin() {
-            const cpf = document.getElementById("cpfInput").value.replace(/\D/g, '');
+            const cpfApenasNumeros = document.getElementById("cpfInput").value.replace(/\D/g, '');
             const senha = document.getElementById("passInput").value;
+            
             const btn = document.getElementById("btnEntrar");
             const erro = document.getElementById("loginError");
             const loading = document.getElementById("loadingMsg");
 
-            if(!cpf || !senha) {
-                alert("Preencha CPF e Senha.");
+            if(!cpfApenasNumeros || !senha) {
+                alert("Por favor, preencha todos os campos.");
                 return;
             }
 
@@ -177,8 +178,11 @@
             mascot.innerText = "⏳";
 
             try {
-                // Chamada real para o Google Sheets
-                const response = await fetch(`${URL_API}?action=login&cpf=${cpf}&senha=${senha}`);
+                const urlFinal = `${URL_API}?action=login&cpf=${cpfApenasNumeros}&senha=${encodeURIComponent(senha)}`;
+                const response = await fetch(urlFinal);
+                
+                if (!response.ok) throw new Error();
+                
                 const data = await response.json();
 
                 if (data.status === "success") {
