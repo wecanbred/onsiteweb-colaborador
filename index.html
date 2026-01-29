@@ -24,8 +24,7 @@
         /* TELA DE LOGIN COM FUNDO PERSONALIZADO */
         #loginOverlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            /* Imagem de fundo com overlay suave */
-            background: linear-gradient(rgba(106, 17, 203, 0.7), rgba(37, 117, 252, 0.7)), 
+            background: linear-gradient(rgba(106, 17, 203, 0.6), rgba(37, 117, 252, 0.6)), 
                         url('https://media.licdn.com/dms/image/v2/D4D12AQFlci6Y8BAUgA/article-cover_image-shrink_600_2000/article-cover_image-shrink_600_2000/0/1690227152728?e=2147483647&v=beta&t=RhQ7SugLJrJQs0_POj2VZJxHClPl8UfTqmKKVkKLxaw');
             background-size: cover;
             background-position: center;
@@ -34,8 +33,8 @@
         }
 
         .login-box {
-            background: rgba(255, 255, 255, 0.95); /* Leve transparência na caixa */
-            padding: 30px 20px; 
+            background: rgba(255, 255, 255, 0.95);
+            padding: 35px 25px; 
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.3); 
             text-align: center; 
@@ -44,22 +43,17 @@
             position: relative;
         }
 
-        /* O MASCOTE (BONEQUINHO) */
+        /* O BONEQUINHO LILÁS */
         .mascot-container {
-            font-size: 50px;
-            height: 70px;
-            margin-bottom: 10px;
-            transition: all 0.3s ease;
-            filter: drop-shadow(0 4px 5px rgba(0,0,0,0.1));
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-size: 45px;
             background: var(--lilac);
-            width: 80px;
-            height: 80px;
-            margin: -60px auto 15px auto; /* Flutuando metade para fora */
+            width: 85px; height: 85px;
+            margin: -75px auto 15px auto; 
             border-radius: 50%;
             border: 5px solid white;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
         }
 
         .login-box img.logo-empresa {
@@ -70,45 +64,35 @@
         .login-box h2 { color: var(--primary); margin-bottom: 20px; font-size: 1.2rem; margin-top: 0; }
 
         .login-box input {
-            width: 100%; 
-            height: 50px;
-            padding: 12px; 
-            margin: 8px 0; 
-            border: 1px solid #ddd;
-            border-radius: 10px; 
-            box-sizing: border-box; 
-            font-size: 16px;
+            width: 100%; height: 50px;
+            padding: 12px; margin: 8px 0; 
+            border: 1px solid #ddd; border-radius: 12px; 
+            box-sizing: border-box; font-size: 16px; outline: none;
         }
 
         .login-box button {
-            width: 100%; 
-            height: 50px;
-            background: var(--primary); 
-            color: white;
-            border: none; 
-            border-radius: 10px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            font-size: 1rem;
-            margin-top: 10px;
+            width: 100%; height: 50px;
+            background: var(--primary); color: white;
+            border: none; border-radius: 12px; 
+            font-weight: bold; cursor: pointer; font-size: 1rem;
+            margin-top: 15px; transition: 0.3s;
         }
 
-        /* ESTILOS DO CONTEÚDO PÓS-LOGIN */
+        .login-box button:disabled { background: #ccc; }
+
+        /* MENSAGENS */
+        #loadingMsg { display: none; color: var(--primary); font-weight: bold; margin-top: 15px; }
+        #loginError { display: none; color: var(--danger); font-weight: 500; font-size: 0.9rem; margin-top: 10px; }
+
+        /* CONTEÚDO PRINCIPAL */
         #mainContent { display: none; }
         body.logged-in #mainContent { display: block; }
         body.logged-in #loginOverlay { display: none; }
 
         .navbar { background: white; height: 60px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: fixed; top: 0; width: 100%; z-index: 1000; box-sizing: border-box; }
-        
-        header { 
-            background: linear-gradient(rgba(106, 17, 203, 0.8), rgba(37, 117, 252, 0.8)), url('https://wecanbr.com.br/wp-content/uploads/2021/08/bg-quem-somos.jpg'); 
-            background-size: cover; background-position: center; 
-            color: white; padding: 60px 20px; text-align: center; margin-top: 60px; 
-        }
-
+        header { background: linear-gradient(rgba(106, 17, 203, 0.8), rgba(37, 117, 252, 0.8)), url('https://wecanbr.com.br/wp-content/uploads/2021/08/bg-quem-somos.jpg'); background-size: cover; background-position: center; color: white; padding: 60px 20px; text-align: center; margin-top: 60px; }
         .container { display: flex; flex-direction: column; align-items: center; gap: 15px; padding: 20px; }
-        
-        .card { background: white; border-radius: 12px; width: 100%; max-width: 320px; padding: 20px; text-align: center; border-top: 5px solid var(--primary); box-sizing: border-box; }
+        .card { background: white; border-radius: 12px; width: 100%; max-width: 320px; padding: 25px; text-align: center; border-top: 5px solid var(--primary); box-sizing: border-box; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 
         @media (min-width: 600px) {
             .container { flex-direction: row; justify-content: center; }
@@ -122,18 +106,16 @@
     <div id="loginOverlay">
         <div class="login-box">
             <div id="mascot" class="mascot-container">👀</div>
-            
             <img src="https://wecanbr.com.br/img/logo.png" alt="Logo WeCanBR" class="logo-empresa">
-            
-            <h2>Acesso ao Portal</h2>
+            <h2>Portal Interno</h2>
             
             <input type="tel" id="cpfInput" placeholder="CPF (apenas números)" inputmode="numeric" onfocus="olhar()" onblur="resetMascot()">
             <input type="password" id="passInput" placeholder="Sua senha" onfocus="esconder()" onblur="resetMascot()">
             
-            <button id="btnEntrar" onclick="verificarLogin()">Entrar</button>
+            <button id="btnEntrar" onclick="verificarLogin()">Entrar no Sistema</button>
             
-            <div id="loadingMsg" style="display:none; margin-top:15px; color:var(--primary); font-weight:bold;">Processando...</div>
-            <p id="loginError" style="display:none; color:var(--danger); font-size:0.8rem; margin-top:10px;">Acesso negado.</p>
+            <div id="loadingMsg">Verificando dados...</div>
+            <p id="loginError">CPF ou Senha incorretos. Tente novamente.</p>
         </div>
     </div>
 
@@ -143,37 +125,33 @@
             <a href="#" onclick="logout()" style="text-decoration:none; color:var(--danger); font-weight:bold;">🚪 SAIR</a>
         </nav>
         <header>
-            <h1>ONSITE</h1>
-            <p>Seja bem-vindo ao seu portal de ferramentas.</p>
+            <h1>BEM-VINDO AO ONSITE</h1>
+            <p>Seus documentos de forma rápida e segura.</p>
         </header>
         <div class="container">
-            <div class="card"><h3>Acesso Liberado</h3><p>Painel do colaborador ativo.</p></div>
-            <div class="card"><h3>Documentos</h3><p>Clique para visualizar.</p></div>
+            <div class="card">
+                <span style="font-size: 40px;">📂</span>
+                <h3>Documentos</h3>
+                <p>Acesse seus arquivos.</p>
+            </div>
+            <div class="card">
+                <span style="font-size: 40px;">📅</span>
+                <h3>Escalas</h3>
+                <p>Confira seu cronograma.</p>
+            </div>
         </div>
         <footer>© 2026 Apoio ao On-Site | WeCanBR</footer>
     </div>
 
     <script>
+        // --- COLOQUE O SEU LINK DA IMPLANTAÇÃO AQUI ---
+        const URL_API = "https://script.google.com/macros/s/AKfycbxkIdlDfuztedbbklTNIZPcpMxK23zViCAihPkFtsom18oLWEmdZmaW8DsvV-M0VxnBUA/exec";
+
         const mascot = document.getElementById('mascot');
 
-        // FUNÇÕES DO BONEQUINHO
-        function olhar() {
-            mascot.innerText = "🧐"; // Olhando atento para o login
-            mascot.style.backgroundColor = "#9b84d8"; // Escurece o lilás um pouco
-        }
-
-        function esconder() {
-            mascot.innerText = "🙈"; // Escondendo os olhos para a senha
-            mascot.style.backgroundColor = "#8a73cf";
-        }
-
-        function resetMascot() {
-            mascot.innerText = "👀"; // Volta ao normal
-            mascot.style.backgroundColor = "var(--lilac)";
-        }
-
-        // LÓGICA DE LOGIN
-        const URL_API = "https://script.google.com/macros/s/AKfycbxkIdlDfuztedbbklTNIZPcpMxK23zViCAihPkFtsom18oLWEmdZmaW8DsvV-M0VxnBUA/exec";
+        function olhar() { mascot.innerText = "🧐"; mascot.style.backgroundColor = "#9b84d8"; }
+        function esconder() { mascot.innerText = "🙈"; mascot.style.backgroundColor = "#8a73cf"; }
+        function resetMascot() { mascot.innerText = "👀"; mascot.style.backgroundColor = "var(--lilac)"; }
 
         window.onload = function() {
             if(sessionStorage.getItem("acesso_liberado") === "true") {
@@ -182,37 +160,42 @@
         }
 
         async function verificarLogin() {
-            const cpf = document.getElementById("cpfInput").value;
+            const cpf = document.getElementById("cpfInput").value.replace(/\D/g, '');
             const senha = document.getElementById("passInput").value;
             const btn = document.getElementById("btnEntrar");
-            
+            const erro = document.getElementById("loginError");
+            const loading = document.getElementById("loadingMsg");
+
             if(!cpf || !senha) {
-                alert("Preencha os dados.");
+                alert("Preencha CPF e Senha.");
                 return;
             }
 
-            btn.style.display = "none";
-            document.getElementById("loadingMsg").style.display = "block";
+            btn.disabled = true;
+            loading.style.display = "block";
+            erro.style.display = "none";
             mascot.innerText = "⏳";
 
             try {
-                await fetch(URL_API + "?action=login", {
-                    method: "POST",
-                    mode: "no-cors",
-                    body: JSON.stringify({ cpf: cpf, senha: senha })
-                });
+                // Chamada real para o Google Sheets
+                const response = await fetch(`${URL_API}?action=login&cpf=${cpf}&senha=${senha}`);
+                const data = await response.json();
 
-                setTimeout(() => {
-                    mascot.innerText = "✨";
-                    sessionStorage.setItem("acesso_liberado", "true");
-                    document.body.classList.add("logged-in");
-                }, 2000);
-
+                if (data.status === "success") {
+                    mascot.innerText = "✅";
+                    setTimeout(() => {
+                        sessionStorage.setItem("acesso_liberado", "true");
+                        document.body.classList.add("logged-in");
+                    }, 800);
+                } else {
+                    throw new Error();
+                }
             } catch (e) {
-                document.getElementById("loadingMsg").style.display = "none";
-                btn.style.display = "block";
-                document.getElementById("loginError").style.display = "block";
+                loading.style.display = "none";
+                btn.disabled = false;
+                erro.style.display = "block";
                 mascot.innerText = "❌";
+                setTimeout(resetMascot, 2000);
             }
         }
 
